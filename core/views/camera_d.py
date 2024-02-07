@@ -146,7 +146,7 @@ class CameraWith24HoursData(APIView):
                         "date": date,
                         "hour": hour,
                         "incoming": counts["incoming"],
-                        "outgoing": counts["outgoing"],git
+                        "outgoing": counts["outgoing"],
                         "present": counts["incoming"] - counts["outgoing"],
                     }
                     camera_info["data"].append(data_entry)
