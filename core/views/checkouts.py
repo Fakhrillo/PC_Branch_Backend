@@ -11,3 +11,18 @@ class CheckoutsAPI(generics.ListCreateAPIView):
 
     queryset = Checkouts.objects.all()
     serializer_class = CheckoutsSerializer
+
+
+class CheckoutUpdateAPI(generics.UpdateAPIView):
+    permission_classes = [IsAdminUser]
+    authentication_classes = [JWTAuthentication]
+
+    queryset = Checkouts.objects.all()
+    serializer_class = CheckoutsSerializer
+
+class CheckoutDeleteAPI(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
+    authentication_classes = [JWTAuthentication]
+
+    queryset = Checkouts.objects.all()
+    serializer_class = CheckoutsSerializer

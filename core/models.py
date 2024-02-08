@@ -1,5 +1,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import AbstractUser
+
 # Create your models here.
 class Camera_details(models.Model):
     MxID = models.CharField(max_length=50)
@@ -16,14 +18,16 @@ class Camera_details(models.Model):
         verbose_name_plural = "Camera Details"
 
 
-class Workers(models.Model):
-    name = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=15)
+class User(AbstractUser):
     is_busy = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    password = models.CharField(max_length=5,null=True, blank=True)
+
+    def __str__(self):
+        return self.username
 
     class Meta:
-        verbose_name_plural = "Workers"
+        verbose_name_plural = "User"
 
 
 class Checkouts(models.Model):
@@ -33,7 +37,7 @@ class Checkouts(models.Model):
     ]
 
     name = models.CharField(max_length=50)
-    worker = models.ForeignKey(Workers, on_delete=models.SET_NULL, null=True, blank=True)
+    worker = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='closed')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -46,7 +50,7 @@ class Checkouts(models.Model):
 class Notifications(models.Model):
     title = models.CharField(max_length=255)
     description = RichTextField()
-    worker = models.ForeignKey(Workers, on_delete=models.CASCADE)
+    worker = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

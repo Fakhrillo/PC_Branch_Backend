@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'core.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -134,7 +135,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 JAZZMIN_SETTINGS = {
@@ -182,7 +184,7 @@ JAZZMIN_SETTINGS = {
         "core.Camera_details": "fas fa-video",
         "core.Checkouts": "fas fa-user-check",
         "core.Notifications": "fas fa-bell",
-        "core.Workers": "fas fa-users",
+        "core.User": "fas fa-users",
     },
 }
 

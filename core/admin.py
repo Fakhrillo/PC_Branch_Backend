@@ -11,12 +11,12 @@ class CameraDetails(admin.ModelAdmin):
     list_filter = ['MxID', 'located', 'status']
     search_fields = ('id', 'MxID')
 
-@admin.register(Workers)
+@admin.register(User)
 class WorkersAdmin(admin.ModelAdmin):
-    list_display = ('id', "name", "phone_number", "is_busy", "created_at")
-    list_display_links = ["id", "name"]
-    list_filter = ["name", "phone_number", "is_busy"]
-    search_fields = ("id", "name", "phone_number")
+    list_display = ('id', "username", "is_busy", "created_at")
+    list_display_links = ["id", "username"]
+    list_filter = ["username", "is_busy"]
+    search_fields = ("id", "username")
 
 @admin.register(Checkouts)
 class CheckoutsAdmin(admin.ModelAdmin):

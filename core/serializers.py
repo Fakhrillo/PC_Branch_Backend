@@ -8,7 +8,7 @@ class CameraDSerializer(serializers.ModelSerializer):
 
 class WorkersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Workers
+        model = User
         fields = '__all__'
 
 class CheckoutsSerializer(serializers.ModelSerializer):

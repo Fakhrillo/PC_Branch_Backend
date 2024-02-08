@@ -5,7 +5,7 @@ from rest_framework_simplejwt.authentication import  JWTAuthentication
 from rest_framework.permissions import IsAdminUser
 import requests
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from environs import Env
 env = Env()
 env.read_env()
@@ -13,15 +13,20 @@ env.read_env()
 from ..models import *
 from ..serializers import CameraDSerializer
 
+class IsSuperUser(IsAdminUser):
+    def has_permission(self, request, view):
+        print(request.user)
+        return bool(request.user and request.user.is_superuser)
+
 class CameraDetailsAPI(generics.ListCreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     authentication_classes = [JWTAuthentication]
 
     queryset = Camera_details.objects.all()
     serializer_class = CameraDSerializer
 
 class CameraDetailsWithData(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser, IsSuperUser]
     authentication_classes = [JWTAuthentication]
 
     jwt_access_token = None
@@ -81,7 +86,7 @@ class CameraDetailsWithData(APIView):
 
 
 class CameraWith24HoursData(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser, IsSuperUser]
     authentication_classes = [JWTAuthentication]
 
     jwt_access_token = None
@@ -154,6 +159,10 @@ class CameraWith24HoursData(APIView):
             response_data.append(camera_info)
 
         return Response(response_data)
+
+
+
+
 
 
 
