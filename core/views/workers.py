@@ -32,13 +32,19 @@ class WorkerDeleteAPI(generics.DestroyAPIView):
 
 class GET_TOKEN(APIView):
     def post(self, request):
-        password = request.data['password']
         username = request.data['username']
 
-        print(password, username)
-        user = User.objects.filter(username=username, password=password).first()
-        print(user)
+        user = User.objects.filter(username=username).first()
         if not user:
             return Response({"error":"Invalid credentials"}, status=401)
         refresh = RefreshToken.for_user(user)
         return Response({"access":str(refresh.access_token), "refresh":str(refresh)})
+    
+class IsWorkerExist(APIView):
+    def get(self, request):
+        username = request.data['username']
+        user = User.objects.filter(username=username).first()
+        if not user:
+            return Response({"error":"Invalid credentials"}, status=401)
+        else:
+            return Response({"Success":f"{user} is registered and can be accessed!"}, status=200)
