@@ -23,8 +23,11 @@ class WorkersAPI(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
     authentication_classes = [JWTAuthentication]
     
-    queryset = User.objects.all()
     serializer_class = WorkersSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.all().values('username', 'first_name', 'last_name')
+        return queryset
 
 class WorkerUpdateAPI(generics.UpdateAPIView):
     permission_classes = [IsAdminUser]
