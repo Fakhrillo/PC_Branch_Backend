@@ -67,18 +67,14 @@ class CameraDetailsWithData(APIView):
         for cam_mxid, details in combined_details.items():
             response_data.append({
                 "MxID": cam_mxid,
-                "details": {
-                    "located": camera_objects.filter(MxID=cam_mxid).first().located,
-                    "status": camera_objects.filter(MxID=cam_mxid).first().status,
-                    "stream_link": camera_objects.filter(MxID=cam_mxid).first().stream_link,
-                    "created_at": camera_objects.filter(MxID=cam_mxid).first().created_at,
-                },
-                "data": {
-                    "incoming": details["incoming"],
-                    "outgoing": details["outgoing"],
-                    "start_date": start_date_str if start_date_str else "N/A",
-                    "end_date": end_date_str if end_date_str else "N/A",
-                }
+                "located": camera_objects.filter(MxID=cam_mxid).first().located,
+                "status": camera_objects.filter(MxID=cam_mxid).first().status,
+                "stream_link": camera_objects.filter(MxID=cam_mxid).first().stream_link,
+                "created_at": camera_objects.filter(MxID=cam_mxid).first().created_at,
+                "incoming": details["incoming"],
+                "outgoing": details["outgoing"],
+                "start_date": start_date_str if start_date_str else "N/A",
+                "end_date": end_date_str if end_date_str else "N/A",
             })
 
         return Response(response_data)
