@@ -9,7 +9,7 @@ class CameraDSerializer(serializers.ModelSerializer):
 class WorkersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'position', 'status',]
+        fields = ['id', 'username', 'first_name', 'position', 'status',]
 
 class CheckoutsSerializer(serializers.ModelSerializer):
     class Meta:
