@@ -26,7 +26,7 @@ class WorkersAPI(generics.ListCreateAPIView):
     serializer_class = WorkersSerializer
 
     def get_queryset(self):
-        queryset = User.objects.all().values('username', 'first_name', "position")
+        queryset = User.objects.exclude(username='admin').values('username', 'first_name', 'position')
         return queryset
 
 class WorkerUpdateAPI(generics.UpdateAPIView):
