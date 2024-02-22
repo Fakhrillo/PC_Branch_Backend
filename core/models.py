@@ -18,7 +18,12 @@ class Camera_details(models.Model):
 
 
 class User(AbstractUser):
-    is_busy = models.BooleanField(default=False)
+    STATUS_CHOICES = [
+        ('free', 'Free'),
+        ('working', 'Working'),
+        ('unavailable', 'Unavailable')
+    ]
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='free')
     created_at = models.DateTimeField(auto_now_add=True)
     position = models.CharField(max_length=50)
     password = models.CharField(max_length=100,null=True, blank=True)

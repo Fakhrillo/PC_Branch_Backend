@@ -13,9 +13,9 @@ class CameraDetails(admin.ModelAdmin):
 
 @admin.register(User)
 class WorkersAdmin(admin.ModelAdmin):
-    list_display = ('id', "username", "position", "is_busy", "created_at")
+    list_display = ('id', "username", "position", "status", "created_at")
     list_display_links = ["id", "username"]
-    list_filter = ["username", "position", "is_busy"]
+    list_filter = ["username", "position", "status"]
     search_fields = ("id", "username")
 
 @admin.register(WorkingHours)
