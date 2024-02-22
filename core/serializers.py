@@ -20,3 +20,8 @@ class NotificationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notifications
         fields = '__all__'
+
+class WorkingHoursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkingHours
+        fields = '__all__'
