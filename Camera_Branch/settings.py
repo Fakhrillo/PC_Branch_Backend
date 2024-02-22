@@ -185,6 +185,7 @@ JAZZMIN_SETTINGS = {
         "core.Checkouts": "fas fa-user-check",
         "core.Notifications": "fas fa-bell",
         "core.User": "fas fa-users",
+        "core.WorkingHours": "fas fa-clock",
     },
 }
 

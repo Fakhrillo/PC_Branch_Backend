@@ -8,7 +8,6 @@ class Camera_details(models.Model):
     located = models.CharField(max_length=155)
     status = models.BooleanField(default=False)
     stream_link = models.URLField(max_length=100, null=True, blank=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -21,6 +20,7 @@ class Camera_details(models.Model):
 class User(AbstractUser):
     is_busy = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    position = models.CharField(max_length=50)
     password = models.CharField(max_length=5,null=True, blank=True)
 
     def __str__(self):
@@ -28,6 +28,19 @@ class User(AbstractUser):
 
     class Meta:
         verbose_name_plural = "User"
+
+class WorkingHours(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.username
+    
+    class Meta:
+        verbose_name_plural = "Working Hours"
 
 
 class Checkouts(models.Model):
@@ -51,6 +64,7 @@ class Notifications(models.Model):
     title = models.CharField(max_length=255)
     description = RichTextField()
     worker = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_activated = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

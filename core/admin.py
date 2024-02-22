@@ -13,10 +13,17 @@ class CameraDetails(admin.ModelAdmin):
 
 @admin.register(User)
 class WorkersAdmin(admin.ModelAdmin):
-    list_display = ('id', "username", "is_busy", "created_at")
+    list_display = ('id', "username", "position", "is_busy", "created_at")
     list_display_links = ["id", "username"]
-    list_filter = ["username", "is_busy"]
+    list_filter = ["username", "position", "is_busy"]
     search_fields = ("id", "username")
+
+@admin.register(WorkingHours)
+class WorkingHoursAdmin(admin.ModelAdmin):
+    list_display = ("id", "username", "start_time", "end_time", "created_at")
+    list_display_links = ["id", "username"]
+    list_filter = ["username", "start_time", "end_time"]
+    search_fields = ("id", "username", "start_time", "end_time")
 
 @admin.register(Checkouts)
 class CheckoutsAdmin(admin.ModelAdmin):
@@ -26,7 +33,7 @@ class CheckoutsAdmin(admin.ModelAdmin):
 
 @admin.register(Notifications)
 class NotificationsAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "worker", "created_at")
+    list_display = ("id", "title", "worker", "is_activated", "created_at")
     list_display_links = ["id", "title"]
-    list_filter = ["title", "worker"]
+    list_filter = ["title", "worker", "is_activated"]
     search_fields = ("id", "title", "worker")
