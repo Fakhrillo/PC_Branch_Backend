@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import  JWTAuthentication
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 import requests
 from collections import defaultdict
 from datetime import datetime
@@ -146,11 +146,58 @@ class CameraWith24HoursData(APIView):
         return Response(response_data)
 
 
+class CameraDetailsForMobile(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
+    jwt_access_token = None
 
+    def get(self, request, *args, **kwargs):
 
+        camera_objects = Camera_details.objects.all()
 
+        username = env("USERNAME")
+        password = env("PASSWORD")
+        API_URL = env("API_URL")
+        
+        get_token(username, password)
+        headers = {'Authorization': f'Bearer {jwt_access_token}'}
 
+        combined_data = defaultdict(lambda: {"incoming": 0, "outgoing": 0})
+
+        for camera_object in camera_objects:
+            cam_mxid = camera_object.MxID
+            url = f"{API_URL}camera/tracked/{cam_mxid}"
+
+            response = requests.get(url, headers=headers)
+
+            if response.status_code == 200:
+                count_details = response.json()
+
+                for entry in count_details:
+                    created_at = datetime.strptime(entry["created_at"], "%Y-%m-%dT%H:%M:%S.%f%z")
+                    hour = created_at.strftime("%Y-%m-%d %H:00")
+                    combined_data[hour]["incoming"] += entry["incoming"]
+                    combined_data[hour]["outgoing"] += entry["outgoing"]
+
+        response_data = {"total_counts": [], "data":[]}
+        total_counts = {"total_incoming": 0, "total_outgoing": 0, "total_present": 0}
+
+        for hour, counts in reversed(combined_data.items()):
+            total_counts["total_incoming"] += counts["incoming"]
+            total_counts["total_outgoing"] += counts["outgoing"]
+            total_counts["total_present"] += counts["incoming"] - counts["outgoing"]
+            data_entry = {
+                "hour": hour,
+                "incoming": counts["incoming"],
+                "outgoing": counts["outgoing"],
+                "present": counts["incoming"] - counts["outgoing"],
+            }
+            response_data["data"].append(data_entry)
+
+        response_data["total_counts"].append(total_counts)
+
+        return Response(response_data)
 
 
 
