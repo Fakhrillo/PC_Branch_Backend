@@ -89,8 +89,12 @@ class CameraWith24HoursData(APIView):
     def get(self, request, *args, **kwargs):
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
+        camera_id = request.query_params.get('mxid')
 
-        camera_objects = Camera_details.objects.all()
+        if camera_id:
+            camera_objects = Camera_details.objects.filter(MxID=camera_id)
+        else:
+            camera_objects = Camera_details.objects.all()
 
         username = env("USERNAME")
         password = env("PASSWORD")
