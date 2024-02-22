@@ -1,12 +1,12 @@
 from rest_framework import generics
 from rest_framework_simplejwt.authentication import  JWTAuthentication
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from ..models import *
 from ..serializers import CheckoutsSerializer
 
 class CheckoutsAPI(generics.ListCreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
     queryset = Checkouts.objects.all()
