@@ -128,7 +128,7 @@ class CameraWith24HoursData(APIView):
                 "outgoing": counts["outgoing"],
                 "present": counts["incoming"] - counts["outgoing"],
             }
-            response_data["data"].insert(0, data_entry)
+            response_data["data"].append(data_entry)
 
         for camera_object in camera_objects:
                 cam_mxid = camera_object.MxID
