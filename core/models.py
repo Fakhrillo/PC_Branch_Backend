@@ -21,7 +21,7 @@ class User(AbstractUser):
     is_busy = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     position = models.CharField(max_length=50)
-    password = models.CharField(max_length=5,null=True, blank=True)
+    password = models.CharField(max_length=100,null=True, blank=True)
 
     def __str__(self):
         return self.username
