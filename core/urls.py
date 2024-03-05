@@ -20,7 +20,7 @@ urlpatterns = [
     path('worker_details/', WorkerDetailsAPI.as_view()),
     path('check_worker/', IsWorkerExist.as_view()),
     path('workers_update/', WorkerUpdateAPI.as_view()),
-    path('workers_delete/', WorkerDeleteAPI.as_view()),
+    path('workers_delete/<int:pk>/', WorkerDeleteAPI.as_view()),
 
     path("get_token/", GET_TOKEN.as_view()),
 ]
