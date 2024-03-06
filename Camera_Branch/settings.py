@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'rest_framework_simplejwt',
     'ckeditor',
+    'django_filters',
 ]
 
 REST_FRAMEWORK = {

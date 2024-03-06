@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django_filters import rest_framework as filters
 from rest_framework_simplejwt.authentication import  JWTAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
@@ -11,6 +12,9 @@ class CheckoutsAPI(generics.ListCreateAPIView):
 
     queryset = Checkouts.objects.all()
     serializer_class = CheckoutsSerializer
+    
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ['status']
 
 
 class CheckoutUpdateAPI(generics.UpdateAPIView):

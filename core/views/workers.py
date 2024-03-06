@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django_filters import rest_framework as filters
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import  JWTAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -19,11 +20,15 @@ from ..serializers import WorkersSerializer
 
 redis_client = redis.StrictRedis(host='localhost', port=6379)
 
+
 class WorkersAPI(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
     authentication_classes = [JWTAuthentication]
     
     serializer_class = WorkersSerializer
+    
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ['status']
 
     def get_queryset(self):
         queryset = User.objects.exclude(username='admin').values('id', 'username', 'first_name', 'position', 'status')

@@ -8,6 +8,7 @@ coreschema==0.0.4
 Django==5.0.1
 django-ckeditor==6.7.0
 django-cors-headers==4.3.1
+django-filter==23.5
 django-jazzmin==2.6.0
 django-js-asset==2.2.0
 djangorestframework==3.14.0

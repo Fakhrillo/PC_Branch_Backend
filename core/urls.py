@@ -11,8 +11,8 @@ urlpatterns = [
     path('camera_details_mobile/', CameraDetailsForMobile.as_view()),
 
     path('checkouts/', CheckoutsAPI.as_view()),
-    path('checkouts_update/', CheckoutUpdateAPI.as_view()),
-    path('checkouts_delete/', CheckoutDeleteAPI.as_view()),
+    path('checkouts_update/<int:pk>/', CheckoutUpdateAPI.as_view()),
+    path('checkouts_delete/<int:pk>/', CheckoutDeleteAPI.as_view()),
 
     path('notifications/', NotificationsAPI.as_view()),
     path('notifications_list/', NotificationsListAPI.as_view()),
