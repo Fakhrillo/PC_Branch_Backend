@@ -12,9 +12,10 @@ class WorkersSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name', 'position', 'status',]
 
 class CheckoutsSerializer(serializers.ModelSerializer):
+    worker_name = serializers.CharField(source='user.first_name', read_only=True)
     class Meta:
         model = Checkouts
-        fields = '__all__'
+        fields = ['id', 'name', 'worker', 'worker_name', 'status', 'created_at']
 
 class NotificationsSerializer(serializers.ModelSerializer):
     class Meta:

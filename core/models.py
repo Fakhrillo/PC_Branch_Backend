@@ -55,7 +55,7 @@ class Checkouts(models.Model):
     ]
 
     name = models.CharField(max_length=50)
-    worker = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    worker = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='closed')
     created_at = models.DateTimeField(auto_now_add=True)
 
