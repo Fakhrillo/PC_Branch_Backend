@@ -123,7 +123,7 @@ class CameraWith24HoursData(APIView):
                     combined_data[hour]["incoming"] += entry["incoming"]
                     combined_data[hour]["outgoing"] += entry["outgoing"]
 
-        response_data = {"cameras":[], "data":[]}
+        response_data = {"data":[]}
 
         for hour, counts in reversed(combined_data.items()):
             data_entry = {
@@ -133,19 +133,6 @@ class CameraWith24HoursData(APIView):
                 "present": counts["incoming"] - counts["outgoing"],
             }
             response_data["data"].append(data_entry)
-
-        for camera_object in camera_objects:
-                cam_mxid = camera_object.MxID
-                camera_info = {
-                    "MxID": cam_mxid,
-                    "details": {
-                        "located": camera_object.located,
-                        "status": camera_object.status,
-                        "stream_link": camera_object.stream_link,
-                        "created_at": camera_object.created_at,
-                    }
-                }
-                response_data["cameras"].append(camera_info)
 
         return Response(response_data)
 
