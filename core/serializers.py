@@ -12,7 +12,7 @@ class WorkersSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name', 'position', 'status',]
 
 class CheckoutsSerializer(serializers.ModelSerializer):
-    worker_name = serializers.CharField(source='user.first_name', read_only=True)
+    worker_name = serializers.CharField(source='worker.first_name', read_only=True)
     class Meta:
         model = Checkouts
         fields = ['id', 'name', 'worker', 'worker_name', 'status', 'created_at']
