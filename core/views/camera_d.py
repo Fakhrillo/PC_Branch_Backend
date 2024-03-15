@@ -134,15 +134,16 @@ class CameraWith24HoursData(APIView):
             total_out += counts["outgoing"]
             present = total_in - total_out
 
-            # dates_str[hour]["incoming"] = counts["incoming"]
-            # dates_str[hour]["outgoing"] = counts["outgoing"]
-            # dates_str[hour]["present"] = present if present >= 0 else 0
+            dates_str[hour]["incoming"] = counts["incoming"]
+            dates_str[hour]["outgoing"] = counts["outgoing"]
+            dates_str[hour]["present"] = present if present >= 0 else 0
 
+        for hour, counts in dates_str.items():
             data.append({
                 "hour": hour,
                 "incoming": counts["incoming"],
                 "outgoing": counts["outgoing"],
-                "present": present if present >= 0 else 0
+                "present": counts["present"]
             })
 
         return Response({"data": data})
