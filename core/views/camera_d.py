@@ -96,7 +96,7 @@ class CameraWith24HoursData(APIView):
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
             num_days = (end_date - start_date).days
 
-        dates_str = {f"{hour:02d}:00": {"incoming": 0, "outgoing": 0, "present": 0} for hour in range(25)}
+        dates_str = {f"{hour:02d}:00": {"incoming": 0, "outgoing": 0, "present": 0} for hour in range(24)}
 
         camera_objects = Camera_details.objects.filter(MxID=camera_id) if camera_id else Camera_details.objects.all()
 
@@ -108,6 +108,7 @@ class CameraWith24HoursData(APIView):
         headers = {'Authorization': f'Bearer {jwt_access_token}'}
 
         combined_data = defaultdict(lambda: {"incoming": 0, "outgoing": 0})
+        data = []
 
         for camera_object in camera_objects:
             cam_mxid = camera_object.MxID
@@ -132,11 +133,19 @@ class CameraWith24HoursData(APIView):
             total_in += counts["incoming"]
             total_out += counts["outgoing"]
             present = total_in - total_out
-            dates_str[hour]["incoming"] = counts["incoming"]
-            dates_str[hour]["outgoing"] = counts["outgoing"]
-            dates_str[hour]["present"] = present if present >= 0 else 0
 
-        return Response(dates_str)
+            # dates_str[hour]["incoming"] = counts["incoming"]
+            # dates_str[hour]["outgoing"] = counts["outgoing"]
+            # dates_str[hour]["present"] = present if present >= 0 else 0
+
+            data.append({
+                "hour": hour,
+                "incoming": counts["incoming"],
+                "outgoing": counts["outgoing"],
+                "present": present if present >= 0 else 0
+            })
+
+        return Response({"data": data})
 
 
 class CameraDetailsForMobile(APIView):
