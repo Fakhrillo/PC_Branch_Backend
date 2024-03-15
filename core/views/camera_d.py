@@ -91,10 +91,14 @@ class CameraWith24HoursData(APIView):
         end_date_str = request.query_params.get('end_date')
         camera_id = request.query_params.get('mxid')
 
-        if camera_id:
-            camera_objects = Camera_details.objects.filter(MxID=camera_id)
-        else:
-            camera_objects = Camera_details.objects.all()
+        if start_date_str and end_date_str:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+            num_days = (end_date - start_date).days
+
+        dates_str = {f"{hour:02d}:00": {"incoming": 0, "outgoing": 0, "present": 0} for hour in range(25)}
+
+        camera_objects = Camera_details.objects.filter(MxID=camera_id) if camera_id else Camera_details.objects.all()
 
         username = env("USERNAME")
         password = env("PASSWORD")
@@ -119,22 +123,20 @@ class CameraWith24HoursData(APIView):
 
                 for entry in count_details:
                     created_at = datetime.strptime(entry["created_at"], "%Y-%m-%dT%H:%M:%S.%f%z")
-                    hour = created_at.strftime("%Y-%m-%d %H:00")
+                    hour = created_at.strftime("%H:00")
                     combined_data[hour]["incoming"] += entry["incoming"]
                     combined_data[hour]["outgoing"] += entry["outgoing"]
+                    
+        total_in = total_out = 0
+        for hour, counts in sorted(combined_data.items()):
+            total_in += counts["incoming"]
+            total_out += counts["outgoing"]
+            present = total_in - total_out
+            dates_str[hour]["incoming"] = counts["incoming"]
+            dates_str[hour]["outgoing"] = counts["outgoing"]
+            dates_str[hour]["present"] = present if present >= 0 else 0
 
-        response_data = {"data":[]}
-
-        for hour, counts in reversed(combined_data.items()):
-            data_entry = {
-                "hour": hour,
-                "incoming": counts["incoming"],
-                "outgoing": counts["outgoing"],
-                "present": counts["incoming"] - counts["outgoing"],
-            }
-            response_data["data"].append(data_entry)
-
-        return Response(response_data)
+        return Response(dates_str)
 
 
 class CameraDetailsForMobile(APIView):

@@ -5,7 +5,6 @@ from ..models import Camera_details
 
 def update_camera_statuses():
     cameras = Camera_details.objects.all()
-    print("It's working!!!")
 
     for camera in cameras:
         try:
