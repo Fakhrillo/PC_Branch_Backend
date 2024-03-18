@@ -25,8 +25,7 @@ class CheckoutUpdateAPI(APIView):
 
     def patch(self, request, pk):
         data = request.data
-        checkout_id = pk
-        checkout = Checkouts.objects.get(pk=checkout_id)
+        checkout = Checkouts.objects.get(pk=pk)
         checkout_status = data['status']
         checkout.status = checkout_status
 
@@ -57,3 +56,11 @@ class CheckoutDeleteAPI(generics.DestroyAPIView):
 
     queryset = Checkouts.objects.all()
     serializer_class = CheckoutsSerializer
+
+    def perform_destroy(self, instance):
+        worker = instance.worker
+        if worker:
+            worker.status = 'free'
+            worker.save()
+
+        super().perform_destroy(instance)
