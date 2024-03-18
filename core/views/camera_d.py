@@ -95,8 +95,10 @@ class CameraWith24HoursData(APIView):
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
             num_days = (end_date - start_date).days
-
-        dates_str = {f"{hour:02d}:00": {"incoming": 0, "outgoing": 0, "present": 0} for hour in range(24)}
+            dates_str = {f"{hour:02d}:00": {"incoming": 0, "outgoing": 0, "present": 0} for hour in range(24)}
+        else:
+            current_hour = datetime.now().hour
+            dates_str = {f"{hour:02d}:00": {"incoming": 0, "outgoing": 0, "present": 0} for hour in range(current_hour+1)}
 
         camera_objects = Camera_details.objects.filter(MxID=camera_id) if camera_id else Camera_details.objects.all()
 
